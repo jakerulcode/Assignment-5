@@ -11,8 +11,8 @@ document.getElementById('login-btn').addEventListener('click',function(){
 
     if(name=='admin' && pin=='admin123'){
         alert ('login successfully')
-        window.location.assign("/Assignment-5/home.html");
-        // window.location.assign("/home.html");
+        window.location.assign("/Assignment-5/main.html");
+        // window.location.assign("/main.html");
 
     }
     else{
