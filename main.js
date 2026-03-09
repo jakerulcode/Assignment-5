@@ -135,4 +135,24 @@ const setActiveTab = (id) => {
 };
 
 
+
+const searchIssues = () => {
+
+  const searchText = document
+    .getElementById("search-input")
+    .value
+    .toLowerCase();
+
+  const filteredIssues = allIssues.filter((issue) =>
+    issue.title.toLowerCase().includes(searchText) ||
+    issue.description.toLowerCase().includes(searchText)
+  );
+
+  displayIssues(filteredIssues);
+
+  document.getElementById("issue-count").innerText =
+    filteredIssues.length + " Issues";
+};
+
+
 loadIssues();
