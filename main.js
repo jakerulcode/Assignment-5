@@ -1,6 +1,15 @@
+const showSpinner = () => {
+  document.getElementById("loading-spinner").classList.remove("hidden");
+};
+
+const hideSpinner = () => {
+  document.getElementById("loading-spinner").classList.add("hidden");
+};
+
 let allIssues = [];
 
 const loadIssues = async () => {
+   showSpinner();
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
@@ -10,6 +19,7 @@ const loadIssues = async () => {
   displayIssues(allIssues);
    document.getElementById("issue-count").innerText =
     allIssues.length + " Issues";
+    hideSpinner()
   
 };
 // id": 1,
@@ -37,6 +47,9 @@ const displayIssues = (datas) => {
         ? "./assets/green.png.png"
         : "./assets/purple.png.png";
     
+
+        const formattedDate = new Date(data.createdAt).toLocaleDateString();
+
     
     
         let borderColor = "";
@@ -54,10 +67,10 @@ const displayIssues = (datas) => {
 
       let btnClass =
         item == "bug"
-          ? "bg-red-300 rounded-full p-1 w-[56px] h-6"
+          ? "bg-red-300 rounded-full p-1 w-[56px] h-6 text-[12px]"
           : item == "help wanted"
-            ? "bg-yellow-400 rounded-full w-[112px] h-6  p-1"
-            : "bg-green-300 rounded-sm p-1 w-[300px]";
+            ? "bg-yellow-400 rounded-full w-[112px] h-6  p-1 text-[12px]"
+            : "bg-green-300 rounded-sm p-1 w-[200px] text-[12px]";
       buttonHtml += `<button class="${btnClass}">${item}</button>`;
     });
 
@@ -78,13 +91,13 @@ const displayIssues = (datas) => {
           ${data.description}
         </p>
 
-        <div class="flex gap-1 items-center 
+        <div class="flex  gap-1 items-center 
         2">${buttonHtml}</div>
         <hr>
 
         <div class=" text-sm text-gray-500 text-left">
           <p>${data.author}</p>
-          <p>${data.createdAt}</p>
+          <p>${formattedDate}</p>
         </div>
       </div>
     `;
@@ -94,17 +107,24 @@ const displayIssues = (datas) => {
 };
 
 const showOpenIssues = () => {
+  
+ showSpinner();
+
   const open = allIssues.filter((issue) => issue.status === "open");
   displayIssues(open);
   document.getElementById("issue-count").innerText =
     open.length + " Issues";
+    hideSpinner()
 };
 
 const showClosedIssues = () => {
+   showSpinner();
+
   const closed = allIssues.filter((issue) => issue.status === "closed");
   displayIssues(closed);
    document.getElementById("issue-count").innerText =
     closed.length + " Issues";
+    hideSpinner()
 };
 const setActiveTab = (id) => {
   document.getElementById("all-btn").classList.remove("active-tab");
@@ -113,5 +133,6 @@ const setActiveTab = (id) => {
 
   document.getElementById(id).classList.add("active-tab");
 };
+
 
 loadIssues();
