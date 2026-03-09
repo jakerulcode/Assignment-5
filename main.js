@@ -1,14 +1,16 @@
-let allIssues=[];
+let allIssues = [];
 
 const loadIssues = async () => {
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
   const data = await res.json();
-   allIssues = data.data
-//   displayIssues(data.data);
- displayIssues(allIssues);
-//   console.log(data);
+  allIssues = data.data;
+  
+  displayIssues(allIssues);
+   document.getElementById("issue-count").innerText =
+    allIssues.length + " Issues";
+  
 };
 // id": 1,
 // "title": "Fix navigation menu on mobile devices",
@@ -34,18 +36,33 @@ const displayIssues = (datas) => {
       data.status === "open"
         ? "./assets/green.png.png"
         : "./assets/purple.png.png";
+    
+    
+    
+        let borderColor = "";
+
+    if (data.status === "open") {
+      borderColor = "border-t-4 border-green-500";
+    } else {
+      borderColor = "border-t-4 border-purple-500";
+    }
 
     const issuCard = document.createElement("div");
-    let buttonHtml = '';
-    data.labels.forEach(item=>{
-        console.log(item)
+    let buttonHtml = "";
+    data.labels.forEach((item) => {
+      console.log(item);
 
-        let btnClass = item=='bug'?"bg-red-300 rounded-full p-1 w-[56px] h-6":item=='help wanted'?"bg-yellow-400 rounded-full w-[112px] h-6  p-1":"bg-green-300 rounded-sm p-1 w-[300px]"
-        buttonHtml+=`<button class="${btnClass}">${item}</button>`
-    })
+      let btnClass =
+        item == "bug"
+          ? "bg-red-300 rounded-full p-1 w-[56px] h-6"
+          : item == "help wanted"
+            ? "bg-yellow-400 rounded-full w-[112px] h-6  p-1"
+            : "bg-green-300 rounded-sm p-1 w-[300px]";
+      buttonHtml += `<button class="${btnClass}">${item}</button>`;
+    });
 
     issuCard.innerHTML = `
-      <div class="bg-base-100 h-full shadow p-6 space-y-3">
+      <div class="bg-base-100 h-full shadow p-6 space-y-3 ${borderColor}">
         <div class="flex justify-between items-center">
           <img src="${statusIcon}" alt="" />
           <span class="badge badge-error bg-red-100 text-red-500 border-none px-4 py-3">
@@ -77,14 +94,24 @@ const displayIssues = (datas) => {
 };
 
 const showOpenIssues = () => {
-  const open = allIssues.filter(issue => issue.status === "open");
+  const open = allIssues.filter((issue) => issue.status === "open");
   displayIssues(open);
+  document.getElementById("issue-count").innerText =
+    open.length + " Issues";
 };
 
 const showClosedIssues = () => {
-  const closed= allIssues.filter(issue => issue.status === "closed");
+  const closed = allIssues.filter((issue) => issue.status === "closed");
   displayIssues(closed);
-}
+   document.getElementById("issue-count").innerText =
+    closed.length + " Issues";
+};
+const setActiveTab = (id) => {
+  document.getElementById("all-btn").classList.remove("active-tab");
+  document.getElementById("open-btn").classList.remove("active-tab");
+  document.getElementById("closed-btn").classList.remove("active-tab");
 
+  document.getElementById(id).classList.add("active-tab");
+};
 
 loadIssues();

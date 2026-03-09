@@ -37,6 +37,10 @@
       * {
         font-family: "Geist", sans-serif;
       }
+      .active-tab {
+        background-color:#4A00FF;
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -81,13 +85,34 @@
     <main class="container mx-auto max-w-[1110px]">
       <!-- 3 tabs -->
       <div class="bg-base-100 gap-2.5 shadow p-6 mb-4">
-        <button onclick="loadIssues()" id="all-btn" class="btn py-3 px-10">
+        <button
+          onclick="
+            loadIssues();
+            setActiveTab('all-btn');
+          "
+          id="all-btn"
+          class="btn py-3 px-10 active-tab"
+        >
           All
         </button>
-        <button onclick="showOpenIssues()" id="open-btn" class="btn py-3 px-10">
+        <button
+          onclick="
+            showOpenIssues();
+            setActiveTab('open-btn');
+          "
+          id="open-btn"
+          class="btn py-3 px-10"
+        >
           Open
         </button>
-        <button onclick="showClosedIssues()" id="closed-btn" class="btn py-3 px-10">
+        <button
+          onclick="
+            showClosedIssues();
+            setActiveTab('closed-btn');
+          "
+          id="closed-btn"
+          class="btn py-3 px-10"
+        >
           Closed
         </button>
       </div>
@@ -98,7 +123,7 @@
         <div class="left flex items-center flex-1 gap-2.5">
           <img src="./assets/Aperture.png" alt="" />
           <div>
-            <h2 class="text-[20px] font-semibold">50 Issues</h2>
+           <h2 id="issue-count" class="text-[20px] font-semibold">0 Issues</h2>
             <p class="text-[#64748B]">Track and manage your project issues</p>
           </div>
         </div>
@@ -114,10 +139,8 @@
         class="bg-base-100 shadow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
         id="issues-container"
       >
-        
-         
-        </div>
-         
+    
+    </div>
     </main>
     <script src="./main.js"></script>
   </body>
