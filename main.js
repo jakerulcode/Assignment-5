@@ -1,10 +1,14 @@
+let allIssues=[];
+
 const loadIssues = async () => {
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
   const data = await res.json();
-  displayIssues(data.data);
-  console.log(data);
+   allIssues = data.data
+//   displayIssues(data.data);
+ displayIssues(allIssues);
+//   console.log(data);
 };
 // id": 1,
 // "title": "Fix navigation menu on mobile devices",
@@ -34,7 +38,10 @@ const displayIssues = (datas) => {
     const issuCard = document.createElement("div");
     let buttonHtml = '';
     data.labels.forEach(item=>{
-        buttonHtml+=`<button>${item}</button>`
+        console.log(item)
+
+        let btnClass = item=='bug'?"bg-red-300 rounded-full p-1 w-[56px] h-6":item=='help wanted'?"bg-yellow-400 rounded-full w-[112px] h-6  p-1":"bg-green-300 rounded-sm p-1 w-[300px]"
+        buttonHtml+=`<button class="${btnClass}">${item}</button>`
     })
 
     issuCard.innerHTML = `
@@ -54,9 +61,11 @@ const displayIssues = (datas) => {
           ${data.description}
         </p>
 
-        <div class="flex">${buttonHtml}</div>
+        <div class="flex gap-1 items-center 
+        2">${buttonHtml}</div>
+        <hr>
 
-        <div class="border-t text-sm text-gray-500 text-left">
+        <div class=" text-sm text-gray-500 text-left">
           <p>${data.author}</p>
           <p>${data.createdAt}</p>
         </div>
@@ -66,5 +75,16 @@ const displayIssues = (datas) => {
     issuescontainer.appendChild(issuCard);
   });
 };
+
+const showOpenIssues = () => {
+  const open = allIssues.filter(issue => issue.status === "open");
+  displayIssues(open);
+};
+
+const showClosedIssues = () => {
+  const closed= allIssues.filter(issue => issue.status === "closed");
+  displayIssues(closed);
+}
+
 
 loadIssues();
